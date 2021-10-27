@@ -12,7 +12,8 @@
 <body>
     <header><h1>Learn Vuejs</h1></header>
     <div id="app">
-
+        <p> @{{ message }} </p>
     </div>
+    <script src="{{ asset('js/vue/home.js') }}"></script>
 </body>
 </html>
