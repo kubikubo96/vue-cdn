@@ -167,6 +167,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -236,6 +241,13 @@ __webpack_require__.r(__webpack_exports__);
     //cách để cha lắng nghe con thay đổi
     updateDataShareFromChild: function updateDataShareFromChild(dataShareChild) {
       this.dataShareChild = dataShareChild;
+    },
+    logDataStore: function logDataStore() {
+      console.log(this.$store.state.count);
+    },
+    setDataStore: function setDataStore() {
+      this.$store.commit('increment', 10);
+      console.log(this.$store.state.count);
     }
   },
   watch: {
@@ -1460,6 +1472,38 @@ var render = function () {
         attrs: { dataShareChild: _vm.dataShareChild },
         on: { dataShareUpdate: _vm.updateDataShareFromChild },
       }),
+      _vm._v(" "),
+      _c("div", [
+        _vm._v("============================================================="),
+      ]),
+      _vm._v(" "),
+      _c("div", [_vm._v("Using Store")]),
+      _vm._v(" "),
+      _c("div", [_vm._v("lay data tu store vuex: ")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          on: {
+            click: function ($event) {
+              return _vm.logDataStore()
+            },
+          },
+        },
+        [_vm._v("Log Get Data From Store")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          on: {
+            click: function ($event) {
+              return _vm.setDataStore()
+            },
+          },
+        },
+        [_vm._v("Log New Data Store After Set")]
+      ),
     ],
     2
   )
@@ -2029,8 +2073,20 @@ var router = new VueRouter({
   routes: routes // short for `routes: routes`
 
 });
+var store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment: function increment(state) {
+      var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+      state.count += n;
+    }
+  }
+});
 var app = new Vue({
-  router: router
+  router: router,
+  store: store
 }).$mount('#app');
 
 /***/ }),

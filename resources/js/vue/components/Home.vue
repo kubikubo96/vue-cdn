@@ -64,6 +64,11 @@
         <div>hiện ở Cha: {{dataShareChild}}</div>
         <TagSelector :dataShareChild="dataShareChild" @dataShareUpdate="updateDataShareFromChild" />
         <!--@dataShareUpdate="updateDataShareFromChild": lắng nghe con thay đổi bằng function-->
+        <div>=============================================================</div>
+        <div>Using Store</div>
+        <div>lay data tu store vuex: </div>
+        <button @click="logDataStore()">Log Get Data From Store</button>
+        <button @click="setDataStore()">Log New Data Store After Set</button>
     </div>
 </template>
 
@@ -137,6 +142,13 @@ export default {
         //cách để cha lắng nghe con thay đổi
         updateDataShareFromChild(dataShareChild) {
             this.dataShareChild = dataShareChild;
+        },
+        logDataStore() {
+            console.log(this.$store.state.count)
+        },
+        setDataStore() {
+            this.$store.commit('increment', 10)
+            console.log(this.$store.state.count)
         }
     },
     watch: {
