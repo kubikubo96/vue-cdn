@@ -49,7 +49,7 @@
         <div>ref : Ánh xạ đến chính element (this.$ref.dataRef)</div>
         <input ref="dataRef" type="text" v-model="dataRef">
         <div>=============================================================</div>
-        <div v-for="(task, index) in tasks" :key="index">
+        <div v-for="(task, index) in tasks" :key="index+100">
             <input type="checkbox" v-model="task.done" >
             <span :class="{done: task.done}">{{task.content}}</span>
         </div>
@@ -78,9 +78,6 @@ export default {
         Menu,
         Task
     },
-    mounted() {
-        //chay dau tien khi vao, thuong dung de goi api
-    },
     data() {
         return {
             message: 'người đông bến đợi thuyền xuôi ngược',
@@ -103,7 +100,29 @@ export default {
             dataShareChild: 'Data share child'
         }
     },
+    created: function () {
+        // chạy sau khi một đối tượng(data) được khởi tạo
+        //Lí do vì sao không dùng JQuery được ở created:
+        //Vì ở created là ta mới chỉ có DOM ảo được tạo ra, mà jquery thì chỉ thao tác được với DOM thật,
+        // do đó nên nếu muốn dùng JQuery ta cần làm ở mounted (khi DOM ảo đã được đồng bộ với DOM thật)
+        //thường dùng để gọi API lấy dữ liệu từ server, khởi tạo websocket, lắng nghe event Laravel Echo,... miễn là ta không động gì vào DOM thật là được
+    },
+    beforeMount: function () {
+        // được gọi sau khi component đã được compile và trước lần render đầu tiên. Ở giai đoạn này khi các bạn truy cập đến các phần tử trong DOM vẫn sẽ báo lỗi
+    },
+    mounted: function () {
+        // chay sau khi đã khởi tạo xong lần đầu. đã có đầy đủ quyền truy cập vào data, template, DOM
+        // thường dùng mounted khi dùng chung với Jquery để tác động vào các phần tử DOM
+    },
+    beforeUpdate: {
+        // Quá trình này được gọi ngay sau khi dữ liệu trên component bị thay đổi và trước khi component re-render,
+    },
+    updated: {
+        // chạy sau khi dữ liệu thay đổi và render lại
+        //Quá trình này xảy ra sau beforeUpdate, ở đây DOM đã được cập nhật lại
+    },
     computed: {
+        //tính toán dữ liệu trước khi hiển thị để tránh cồng kềnh ở phần hiển thị (trong template)
         reversedMessage: function () {
             // `this` trỏ tới đối tượng vm
             return this.message.split(' ').reverse().join(' ')
@@ -125,6 +144,16 @@ export default {
         newTask: function () {
             console.log('new Task change')
         }
+    },
+    beforeDestroy: {
+        //Quá trình này xay ra ngay trước khi component của chúng ta bị huỷ đi
+        //Ta thường dùng hàm này để xoá đi các sự kiện không cần thiết sau khi component bị huỷ
+        //thường dùng khi ta muốn huỷ lắng nghe các sự kiện: như sự kiện onscroll, hay các sự kiện lắng nghe socket.io, larave-echo,...
+    },
+    destroyed: {
+        //Tại quá trình này thì hầu như mọi thứ trên component đã bị huỷ đi: các directives bị huỷ, các event lắng nghe bị bỏ đi,
+        // các component con cũng đã bị destroy, watchers cũng đã bị huỷ,... nhưng ở ta vẫn có thể làm một số việc như thông báo với remote server là component vừa bị huỷ chẳng hạn.
+        //Note: tại đây ta data vẫn còn và ta vẫn có thể truy cập được.
     }
 };
 </script>

@@ -176,8 +176,6 @@ __webpack_require__.r(__webpack_exports__);
     Menu: _Menu__WEBPACK_IMPORTED_MODULE_0__["default"],
     Task: _Task__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  mounted: function mounted() {//chay dau tien khi vao, thuong dung de goi api
-  },
   data: function data() {
     return {
       message: 'người đông bến đợi thuyền xuôi ngược',
@@ -205,7 +203,24 @@ __webpack_require__.r(__webpack_exports__);
       dataShareChild: 'Data share child'
     };
   },
+  created: function created() {// chạy sau khi một đối tượng(data) được khởi tạo
+    //Lí do vì sao không dùng JQuery được ở created:
+    //Vì ở created là ta mới chỉ có DOM ảo được tạo ra, mà jquery thì chỉ thao tác được với DOM thật,
+    // do đó nên nếu muốn dùng JQuery ta cần làm ở mounted (khi DOM ảo đã được đồng bộ với DOM thật)
+    //thường dùng để gọi API lấy dữ liệu từ server, khởi tạo websocket, lắng nghe event Laravel Echo,... miễn là ta không động gì vào DOM thật là được
+  },
+  beforeMount: function beforeMount() {// được gọi sau khi component đã được compile và trước lần render đầu tiên. Ở giai đoạn này khi các bạn truy cập đến các phần tử trong DOM vẫn sẽ báo lỗi
+  },
+  mounted: function mounted() {// chay sau khi đã khởi tạo xong lần đầu. đã có đầy đủ quyền truy cập vào data, template, DOM
+    // thường dùng mounted khi dùng chung với Jquery để tác động vào các phần tử DOM
+  },
+  beforeUpdate: {// Quá trình này được gọi ngay sau khi dữ liệu trên component bị thay đổi và trước khi component re-render,
+  },
+  updated: {// chạy sau khi dữ liệu thay đổi và render lại
+    //Quá trình này xảy ra sau beforeUpdate, ở đây DOM đã được cập nhật lại
+  },
   computed: {
+    //tính toán dữ liệu trước khi hiển thị để tránh cồng kềnh ở phần hiển thị (trong template)
     reversedMessage: function reversedMessage() {
       // `this` trỏ tới đối tượng vm
       return this.message.split(' ').reverse().join(' ');
@@ -228,6 +243,14 @@ __webpack_require__.r(__webpack_exports__);
     newTask: function newTask() {
       console.log('new Task change');
     }
+  },
+  beforeDestroy: {//Quá trình này xay ra ngay trước khi component của chúng ta bị huỷ đi
+    //Ta thường dùng hàm này để xoá đi các sự kiện không cần thiết sau khi component bị huỷ
+    //thường dùng khi ta muốn huỷ lắng nghe các sự kiện: như sự kiện onscroll, hay các sự kiện lắng nghe socket.io, larave-echo,...
+  },
+  destroyed: {//Tại quá trình này thì hầu như mọi thứ trên component đã bị huỷ đi: các directives bị huỷ, các event lắng nghe bị bỏ đi,
+    // các component con cũng đã bị destroy, watchers cũng đã bị huỷ,... nhưng ở ta vẫn có thể làm một số việc như thông báo với remote server là component vừa bị huỷ chẳng hạn.
+    //Note: tại đây ta data vẫn còn và ta vẫn có thể truy cập được.
   }
 });
 
@@ -1333,7 +1356,7 @@ var render = function () {
       ]),
       _vm._v(" "),
       _vm._l(_vm.tasks, function (task, index) {
-        return _c("div", { key: index }, [
+        return _c("div", { key: index + 100 }, [
           _c("input", {
             directives: [
               {
@@ -2019,7 +2042,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\wamp64\www\Develop\vue-cdn\resources\js\vue\home.js */"./resources/js/vue/home.js");
+module.exports = __webpack_require__(/*! D:\wamp64\www\developer\vue-cdn\resources\js\vue\home.js */"./resources/js/vue/home.js");
 
 
 /***/ })
