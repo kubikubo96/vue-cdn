@@ -12,7 +12,7 @@
 11. v-else, v-else-if:
 12.computed: tính toán dữ liệu trước khi hiển thị để tránh cồng kềnh ở phần hiển thị (trong template)
 13. watch: theo dõi sự thay đổi của data
-14. hooks. mounted: //chay dau tien khi vao, thuong dung de goi api
+14. hooks. mounted: //chay dau tien khi vao,
 15. props. du lieu day tu component cha => component con
 -->
 <template>
@@ -116,6 +116,7 @@ export default {
         // được gọi sau khi component đã được compile và trước lần render đầu tiên. Ở giai đoạn này khi các bạn truy cập đến các phần tử trong DOM vẫn sẽ báo lỗi
     },
     mounted() {
+        // Được gọi khi tiến trình render lần đầu hoàn tất.
         console.log("HERE");
     },
     beforeUpdate: {
