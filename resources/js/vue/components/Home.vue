@@ -105,7 +105,7 @@ export default {
             dataShareChild: 'Data share child'
         }
     },
-    created: function () {
+    created() {
         // chạy sau khi một đối tượng(data) được khởi tạo
         //Lí do vì sao không dùng JQuery được ở created:
         //Vì ở created là ta mới chỉ có DOM ảo được tạo ra, mà jquery thì chỉ thao tác được với DOM thật,
@@ -115,9 +115,8 @@ export default {
     beforeMount: function () {
         // được gọi sau khi component đã được compile và trước lần render đầu tiên. Ở giai đoạn này khi các bạn truy cập đến các phần tử trong DOM vẫn sẽ báo lỗi
     },
-    mounted: function () {
-        // chay sau khi đã khởi tạo xong lần đầu. đã có đầy đủ quyền truy cập vào data, template, DOM
-        // thường dùng mounted khi dùng chung với Jquery để tác động vào các phần tử DOM
+    mounted() {
+        console.log("HERE");
     },
     beforeUpdate: {
         // Quá trình này được gọi ngay sau khi dữ liệu trên component bị thay đổi và trước khi component re-render,
